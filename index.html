@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mudra Bank — Modern Banking, Reimagined</title>
+    <meta name="description" content="A sleek banking dashboard with deposits, withdrawals and a full audit trail." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            colors: {
+              ink: "#09090b",
+              panel: "#0f0f12",
+              line: "#27272a",
+              muted: "#a1a1aa",
+              emerald: { brand: "#10b981", glow: "#34d399" },
+              rose: { brand: "#f43f5e", glow: "#fb7185" },
+            },
+            boxShadow: {
+              glow: "0 0 60px -10px rgba(16,185,129,0.45)",
+              danger: "0 0 60px -10px rgba(244,63,94,0.45)",
+              card: "0 1px 0 0 rgba(255,255,255,0.04) inset, 0 12px 30px -12px rgba(0,0,0,0.6)",
+            },
+            keyframes: {
+              "fade-in": {
+                "0%": { opacity: "0", transform: "translateY(10px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              "scale-in": {
+                "0%": { opacity: "0", transform: "scale(0.96)" },
+                "100%": { opacity: "1", transform: "scale(1)" },
+              },
+              "slide-up": {
+                "0%": { opacity: "0", transform: "translateY(16px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              shimmer: {
+                "0%": { backgroundPosition: "-400px 0" },
+                "100%": { backgroundPosition: "400px 0" },
+              },
+            },
+            animation: {
+              "fade-in": "fade-in 0.4s ease-out",
+              "scale-in": "scale-in 0.2s ease-out",
+              "slide-up": "slide-up 0.5s cubic-bezier(0.22,1,0.36,1)",
+              shimmer: "shimmer 2.5s linear infinite",
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body class="font-sans bg-ink text-white antialiased min-h-screen">
+    <!-- Decorative backdrop (grid + radial glows) -->
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow--emerald" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow--blue" aria-hidden="true"></div>
+
+    <!-- ============= TOP NAV ============= -->
+    <nav
+      class="relative z-20 border-b border-line/70 backdrop-blur-md bg-ink/60"
+    >
+      <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+        <a href="#" class="flex items-center gap-2.5 group">
+          <span
+            class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-brand to-emerald-glow grid place-items-center shadow-glow transition-transform group-hover:scale-105"
+          >
+            <svg viewBox="0 0 24 24" class="w-4 h-4 text-ink" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M3 10l9-6 9 6" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M5 10v9h14v-9" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M9 19v-5h6v5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <span class="font-bold tracking-tight text-lg">Mudra<span class="text-emerald-glow">Bank</span></span>
+        </a>
+
+        <div class="flex items-center gap-2">
+          <button
+            id="navAdminBtn"
+            class="hidden md:inline-flex items-center gap-2 text-sm text-muted hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-white/5"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Admin
+          </button>
+          <button
+            id="navLogoutBtn"
+            class="hidden items-center gap-2 text-sm bg-white/5 hover:bg-white/10 border border-line px-3 py-2 rounded-lg transition-colors"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M16 17l5-5-5-5M21 12H9" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ============= AUTH SCREEN ============= -->
+    <section id="authScreen" class="relative z-10 max-w-md mx-auto px-5 pt-16 md:pt-24 pb-20 animate-fade-in">
+      <div class="text-center mb-8">
+        <span
+  class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted border border-line rounded-full px-3 py-1"
+>
+  <span class="w-1.5 h-1.5 rounded-full bg-emerald-brand"></span>
+  Secure banking
+</span>
+        <h1 class="mt-5 text-4xl md:text-5xl font-bold tracking-tight">
+          Welcome to <span class="bg-gradient-to-r from-emerald-brand to-emerald-glow bg-clip-text text-transparent">MudraBank</span>
+        </h1>
+        <p class="mt-3 text-muted text-sm">Sign in to your account or create a new one in seconds.</p>
+      </div>
+
+      <div class="glass-card p-6 md:p-8 animate-slide-up">
+        <!-- Tabs -->
+        <div class="grid grid-cols-2 p-1 bg-panel/80 border border-line rounded-xl mb-6 relative">
+          <button data-tab="login" class="auth-tab tab-active py-2.5 text-sm font-medium rounded-lg transition-colors">Log in</button>
+          <button data-tab="signup" class="auth-tab py-2.5 text-sm font-medium text-muted rounded-lg transition-colors">Sign up</button>
+        </div>
+
+        <!-- LOGIN -->
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label class="text-xs font-medium text-muted uppercase tracking-wider">Account Number</label>
+            <input
+              name="account_number"
+              maxlength="10"
+              required
+              autocomplete="off"
+              placeholder="e.g. A1B2C3D4E5"
+              class="input mt-1.5 uppercase tracking-widest"
+            />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-muted uppercase tracking-wider">4-digit PIN</label>
+            <input
+              name="pin"
+              type="password"
+              inputmode="numeric"
+              pattern="[0-9]{4}"
+              maxlength="4"
+              required
+              placeholder="••••"
+              class="input mt-1.5 tracking-[0.6em] text-center"
+            />
+          </div>
+          <button class="btn btn-primary w-full mt-2" type="submit">
+            Log in
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </form>
+
+        <!-- SIGNUP -->
+        <form id="signupForm" class="space-y-4 hidden">
+          <div>
+            <label class="text-xs font-medium text-muted uppercase tracking-wider">Full Name</label>
+            <input name="name" required placeholder="Jane Doe" class="input mt-1.5" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-muted uppercase tracking-wider">4-digit PIN</label>
+            <input
+              name="pin"
+              type="password"
+              inputmode="numeric"
+              pattern="[0-9]{4}"
+              maxlength="4"
+              required
+              placeholder="••••"
+              class="input mt-1.5 tracking-[0.6em] text-center"
+            />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-muted uppercase tracking-wider">Confirm PIN</label>
+            <input
+              name="confirm_pin"
+              type="password"
+              inputmode="numeric"
+              pattern="[0-9]{4}"
+              maxlength="4"
+              required
+              placeholder="••••"
+              class="input mt-1.5 tracking-[0.6em] text-center"
+            />
+          </div>
+          <button class="btn btn-primary w-full mt-2" type="submit">
+            Create account
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </form>
+
+        <p class="text-[11px] text-muted/80 text-center mt-6">
+          
+        </p>
+      </div>
+    </section>
+
+    <!-- ============= DASHBOARD ============= -->
+    <section id="dashboard" class="hidden relative z-10 max-w-6xl mx-auto px-5 pt-10 pb-24">
+      <!-- Hero balance -->
+      <div class="text-center mb-12 animate-fade-in">
+        <p class="text-xs uppercase tracking-[0.25em] text-muted">Available Balance</p>
+        <div class="mt-3 flex items-baseline justify-center gap-1">
+          <span class="text-3xl md:text-4xl text-muted font-medium">$</span>
+          <span id="balanceDisplay" class="text-6xl md:text-8xl font-bold tracking-tight tabular-nums">0.00</span>
+        </div>
+        <div class="mt-4 inline-flex items-center gap-3 text-sm text-muted">
+          <span>Welcome back,</span>
+          <span id="userName" class="text-white font-medium">—</span>
+          <span class="w-1 h-1 rounded-full bg-line"></span>
+          <span class="font-mono text-xs tracking-wider" id="userAcct">—</span>
+          <button
+            id="copyAcctBtn"
+            class="text-muted hover:text-emerald-glow transition-colors"
+            title="Copy account number"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" />
+              <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action grid -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+        <button data-action="deposit" class="action-card group">
+          <span class="action-icon bg-emerald-brand/10 text-emerald-glow border-emerald-brand/30">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5">
+              <path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <div class="text-left">
+            <h3 class="font-semibold">Deposit</h3>
+            <p class="text-xs text-muted mt-0.5">Add funds instantly</p>
+          </div>
+        </button>
+
+        <button data-action="withdraw" class="action-card group">
+          <span class="action-icon bg-rose-brand/10 text-rose-glow border-rose-brand/30">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5">
+              <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <div class="text-left">
+            <h3 class="font-semibold">Withdraw</h3>
+            <p class="text-xs text-muted mt-0.5">Take money out</p>
+          </div>
+        </button>
+
+        <button data-action="settings" class="action-card group sm:col-span-2 lg:col-span-1">
+          <span class="action-icon bg-white/5 text-white border-line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <div class="text-left">
+            <h3 class="font-semibold">Settings</h3>
+            <p class="text-xs text-muted mt-0.5">Update name, PIN, delete</p>
+          </div>
+        </button>
+      </div>
+
+      <!-- Transactions -->
+      <div class="glass-card overflow-hidden animate-slide-up">
+        <div class="px-5 md:px-6 py-4 border-b border-line/70 flex items-center justify-between gap-3 flex-wrap">
+          <div>
+            <h2 class="font-semibold text-lg">Transaction history</h2>
+            <p class="text-xs text-muted mt-0.5">All activity on your account, latest first.</p>
+          </div>
+          <div class="relative">
+            <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M21 21l-4.35-4.35" stroke-linecap="round" />
+            </svg>
+            <input id="txSearch" placeholder="Search…" class="input pl-9 py-2 text-sm w-44" />
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-xs uppercase tracking-wider text-muted bg-white/[0.02]">
+              <tr>
+                <th class="text-left font-medium px-5 py-3">ID</th>
+                <th class="text-left font-medium px-5 py-3">Action</th>
+                <th class="text-right font-medium px-5 py-3">Amount</th>
+                <th class="text-left font-medium px-5 py-3">Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="txTable" class="divide-y divide-line/60"></tbody>
+          </table>
+        </div>
+        <div id="txEmpty" class="hidden text-center py-12 text-muted text-sm">
+          No transactions yet — make your first deposit ✨
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= ADMIN SCREEN ============= -->
+    <section id="adminScreen" class="hidden relative z-10 max-w-6xl mx-auto px-5 pt-10 pb-24 animate-fade-in">
+      <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <div>
+          <span class="text-xs uppercase tracking-[0.25em] text-muted">Admin</span>
+          <h2 class="text-3xl font-bold tracking-tight mt-1">System Audit Log</h2>
+          <p class="text-sm text-muted mt-1">Every action across every account.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="relative">
+            <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M21 21l-4.35-4.35" stroke-linecap="round" />
+            </svg>
+            <input id="adminSearch" placeholder="Search account, name, action…" class="input pl-9 py-2 text-sm w-64" />
+          </div>
+          <button id="adminBackBtn" class="btn btn-ghost text-sm">Back</button>
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-4 mb-6">
+        <div class="glass-card p-5">
+          <p class="text-xs uppercase tracking-wider text-muted">Total accounts</p>
+          <p id="statAccounts" class="text-3xl font-bold mt-2 tabular-nums">0</p>
+        </div>
+        <div class="glass-card p-5">
+          <p class="text-xs uppercase tracking-wider text-muted">Total deposits</p>
+          <p id="statDeposits" class="text-3xl font-bold mt-2 tabular-nums text-emerald-glow">$0.00</p>
+        </div>
+        <div class="glass-card p-5">
+          <p class="text-xs uppercase tracking-wider text-muted">Total withdrawals</p>
+          <p id="statWithdrawals" class="text-3xl font-bold mt-2 tabular-nums text-rose-glow">$0.00</p>
+        </div>
+      </div>
+
+      <div class="glass-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="text-xs uppercase tracking-wider text-muted bg-white/[0.02]">
+              <tr>
+                <th class="text-left font-medium px-5 py-3">ID</th>
+                <th class="text-left font-medium px-5 py-3">Account</th>
+                <th class="text-left font-medium px-5 py-3">Holder</th>
+                <th class="text-left font-medium px-5 py-3">Action</th>
+                <th class="text-right font-medium px-5 py-3">Amount</th>
+                <th class="text-left font-medium px-5 py-3">Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="adminTable" class="divide-y divide-line/60"></tbody>
+          </table>
+        </div>
+        <div id="adminEmpty" class="hidden text-center py-12 text-muted text-sm">No audit logs yet.</div>
+      </div>
+    </section>
+
+    <!-- ============= MODAL ============= -->
+    <div id="modalRoot" class="hidden fixed inset-0 z-50 grid place-items-center px-4">
+      <div class="absolute inset-0 bg-ink/80 backdrop-blur-sm" data-close-modal></div>
+      <div class="relative w-full max-w-md glass-card p-6 md:p-7 animate-scale-in">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h3 id="modalTitle" class="text-xl font-semibold tracking-tight">Title</h3>
+            <p id="modalSubtitle" class="text-xs text-muted mt-1">Subtitle</p>
+          </div>
+          <button data-close-modal class="text-muted hover:text-white transition-colors">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+
+    <!-- ============= TOAST ============= -->
+    <div id="toastRoot" class="fixed bottom-6 right-6 z-[60] flex flex-col gap-2 pointer-events-none"></div>
+
+    <script src="./app.js?v=2"></script>
+  </body>
+</html>
