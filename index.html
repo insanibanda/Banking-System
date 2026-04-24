@@ -373,6 +373,47 @@
       </div>
     </section>
 
+       <!-- ============= ADMIN WARNING MODAL ============= -->
+    <div id="adminWarnRoot" class="hidden fixed inset-0 z-[55] grid place-items-center px-4">
+      <div class="absolute inset-0 bg-ink/85 backdrop-blur-sm" data-close-adminwarn></div>
+      <div class="relative w-full max-w-md glass-card p-6 md:p-7 animate-scale-in">
+        <div class="flex items-start gap-4 mb-4">
+          <div class="shrink-0 w-11 h-11 rounded-xl grid place-items-center"
+               style="background: rgba(244,63,94,0.12); border: 1px solid rgba(244,63,94,0.35);">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#fb7185" stroke-width="2">
+              <path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-xl font-semibold tracking-tight">Restricted Area</h3>
+            <p class="text-xs text-muted mt-1 uppercase tracking-[0.2em]">Admin access</p>
+          </div>
+          <button data-close-adminwarn class="text-muted hover:text-white transition-colors">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+        <p class="text-sm text-white/80 leading-relaxed">
+          This page is normally <span class="text-rose-glow font-semibold">unauthorized</span> and reserved for
+          system administrators. Since this is a project demo, you're allowed to preview the audit log.
+        </p>
+        <p class="text-xs text-muted mt-3">
+          Click <span class="text-white">Continue</span> to view all system activity.
+        </p>
+        <div class="flex items-center justify-end gap-2 mt-6">
+          <button data-close-adminwarn class="btn btn-ghost text-sm">Cancel</button>
+          <button id="adminWarnContinue" class="btn btn-primary text-sm">
+            Continue
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    
     <!-- ============= MODAL ============= -->
     <div id="modalRoot" class="hidden fixed inset-0 z-50 grid place-items-center px-4">
       <div class="absolute inset-0 bg-ink/80 backdrop-blur-sm" data-close-modal></div>
