@@ -455,8 +455,25 @@
       toast("Signed out.", "info");
       showAuth();
     });
+     
+    const adminWarn = $("#adminWarnRoot");
+    const openAdminWarn = () => {
+      adminWarn.classList.remove("hidden");
+      adminWarn.classList.add("flex");
+    };
+    const closeAdminWarn = () => {
+      adminWarn.classList.add("hidden");
+      adminWarn.classList.remove("flex");
+    };
+    $("#navAdminBtn").addEventListener("click", openAdminWarn);
+    $$("[data-close-adminwarn]", adminWarn).forEach(el =>
+      el.addEventListener("click", closeAdminWarn)
+    );
+    $("#adminWarnContinue").addEventListener("click", () => {
+      closeAdminWarn();
+      showAdmin();
+    });
 
-    $("#navAdminBtn").addEventListener("click", showAdmin);
     $("#adminBackBtn").addEventListener("click", () =>
       State.currentUser ? showDashboard() : showAuth()
     );
